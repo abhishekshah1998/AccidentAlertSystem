@@ -85,11 +85,11 @@
             android:layout_height="wrap_content"
             android:text="Discover New Devices" />
 
-        <ListView
-            android:id="@+id/devicesListView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice" />
+    <ListView
+        android:id="@+id/devicesListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice" />
 
 
 </LinearLayout>

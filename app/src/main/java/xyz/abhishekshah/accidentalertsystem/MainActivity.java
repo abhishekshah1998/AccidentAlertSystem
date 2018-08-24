@@ -346,6 +346,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 mmSocket.close();
             } catch (IOException e) { }
+
+            //Hello Friends Chai Pi looooo
         }
     }
 }
