@@ -9,5 +9,10 @@
     </style>
     <style name="MySwitchWidgetTheme" parent="android:Theme.Holo.Light" >
     </style>
+     <style name="SwitchTextTheme" >
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+         <item name="android:textColor">#FFF</item>
+     </style>
 
 </resources>
