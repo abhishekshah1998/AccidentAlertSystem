@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="xyz.abhishekshah.accidentalertsystem.MainActivity">
 
@@ -68,27 +69,24 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch2"
-            style="style/MySwitchWidgetTheme"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:checked="false"
-            android:showText="true"
-            android:splitTrack="true"
-            android:switchMinWidth="120dp"
-            android:switchPadding="20dp"
-            android:switchTextAppearance="@style/TextAppearance.AppCompat.Large"
-            android:text="Bluetooth State:"
+            app:showText="true"
             android:textAlignment="viewStart"
-            android:textOff="OFF"
-            android:textOn="ON"
+            android:text="Bluetooth State:"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:thumb="@android:color/holo_red_dark"
-            android:thumbTint="@android:color/holo_red_dark"
-            tools:checked="false" />
+            app:splitTrack="true"
+            app:switchPadding="20dp"
+            app:switchTextAppearance="@style/SwitchTextTheme"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:thumb="@drawable/thumb"
+            app:track="@drawable/track"
+            tools:checked="false"/>
 
 
     </LinearLayout>
