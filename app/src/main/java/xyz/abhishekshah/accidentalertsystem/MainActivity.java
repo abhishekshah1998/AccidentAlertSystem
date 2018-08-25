@@ -19,7 +19,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
+    private Switch mSwitch;
     //private CheckBox mLED1;
 
     private Handler mHandler; // Our main handler that will receive callback notifications
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mOffBtn = findViewById(R.id.off);
         mDiscoverBtn = findViewById(R.id.discover);
         mListPairedDevicesBtn = findViewById(R.id.PairedBtn);
+        mSwitch = findViewById(R.id.switch2);
         //mLED1 = (CheckBox)findViewById(R.id.checkboxLED1);
 
 
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });*/
 
-
+            /*
             mScanBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     bluetoothOff(v);
                 }
             });
+            */
 
             mListPairedDevicesBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,11 +152,40 @@ public class MainActivity extends AppCompatActivity {
                     discover(v);
                 }
             });
+
+            mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        if (!mBTAdapter.isEnabled()) {
+                            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                            mBluetoothStatus.setText("Bluetooth enabled");
+                            Toast.makeText(getApplicationContext(),"Bluetooth turned on",Toast.LENGTH_SHORT).show();
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(),"Bluetooth is already on", Toast.LENGTH_SHORT).show();
+                        }
+
+                        // The toggle is enabled
+                    } else {
+                        mBTAdapter.disable(); // turn off
+                        mBluetoothStatus.setText("Bluetooth disabled");
+                        Toast.makeText(getApplicationContext(),"Bluetooth turned Off", Toast.LENGTH_SHORT).show();
+                        // The toggle is disabled
+                    }
+                }
+            });
+
         }
     }
 
-    private void bluetoothOn(View view){
-        if (!mBTAdapter.isEnabled()) {
+
+
+
+
+   // private void bluetoothOn(View view){
+       /* if (!mBTAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             mBluetoothStatus.setText("Bluetooth enabled");
@@ -160,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Toast.makeText(getApplicationContext(),"Bluetooth is already on", Toast.LENGTH_SHORT).show();
-        }
-    }
+        }*/
+   // }
 
     // Enter here after user selects "yes" or "no" to enabling radio
     @Override
@@ -179,11 +213,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void bluetoothOff(View view){
+   /* private void bluetoothOff(View view){
         mBTAdapter.disable(); // turn off
         mBluetoothStatus.setText("Bluetooth disabled");
         Toast.makeText(getApplicationContext(),"Bluetooth turned Off", Toast.LENGTH_SHORT).show();
-    }
+    } */
+
+
+
+
+
 
     private void discover(View view){
         // Check if the device is already discovering

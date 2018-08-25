@@ -59,9 +59,22 @@
                 android:maxLines="1"
                 android:text="@string/bluetooth_status"
                 android:textSize="24sp" />
+
         </LinearLayout>
 
-        <Button
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="0.1"
+        android:gravity="start"
+        android:paddingLeft="0dp"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:thumbTint="@android:color/holo_blue_dark" />
+
+    <Button
             android:id="@+id/scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
