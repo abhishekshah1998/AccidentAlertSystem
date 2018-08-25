@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
     // GUI Components
     private TextView mBluetoothStatus;
     private TextView mReadBuffer;
-    private Button mScanBtn;
-    private Button mOffBtn;
     private Button mListPairedDevicesBtn;
     private Button mDiscoverBtn;
     private BluetoothAdapter mBTAdapter;
@@ -46,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
     private Switch mSwitch;
-    //private CheckBox mLED1;
 
     private Handler mHandler; // Our main handler that will receive callback notifications
     private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
@@ -68,14 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         mBluetoothStatus = findViewById(R.id.bluetoothStatus);
         mReadBuffer =  findViewById(R.id.readBuffer);
-        mScanBtn = findViewById(R.id.scan);
-        mOffBtn = findViewById(R.id.off);
         mDiscoverBtn = findViewById(R.id.discover);
         mListPairedDevicesBtn = findViewById(R.id.PairedBtn);
         mSwitch = findViewById(R.id.switch2);
-        //mLED1 = (CheckBox)findViewById(R.id.checkboxLED1);
-
-
 
         mBTArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         mBTAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
@@ -114,30 +105,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Bluetooth device not found!",Toast.LENGTH_SHORT).show();
         }
         else {
-
-           /* mLED1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    if(mConnectedThread != null) //First check to make sure thread created
-                        mConnectedThread.write("1");
-                }
-            });*/
-
-            /*
-            mScanBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bluetoothOn(v);
-                }
-            });
-
-            mOffBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    bluetoothOff(v);
-                }
-            });
-            */
 
             mListPairedDevicesBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,22 +148,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-   // private void bluetoothOn(View view){
-       /* if (!mBTAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            mBluetoothStatus.setText("Bluetooth enabled");
-            Toast.makeText(getApplicationContext(),"Bluetooth turned on",Toast.LENGTH_SHORT).show();
-
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"Bluetooth is already on", Toast.LENGTH_SHORT).show();
-        }*/
-   // }
-
     // Enter here after user selects "yes" or "no" to enabling radio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent Data){
@@ -212,15 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 mBluetoothStatus.setText("Disabled");
         }
     }
-
-   /* private void bluetoothOff(View view){
-        mBTAdapter.disable(); // turn off
-        mBluetoothStatus.setText("Bluetooth disabled");
-        Toast.makeText(getApplicationContext(),"Bluetooth turned Off", Toast.LENGTH_SHORT).show();
-    } */
-
-
-
 
 
 

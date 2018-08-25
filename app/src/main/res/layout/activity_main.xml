@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="xyz.abhishekshah.accidentalertsystem.MainActivity">
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -62,31 +62,38 @@
 
         </LinearLayout>
 
-    <Switch
-        android:id="@+id/switch2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_weight="0.1"
-        android:gravity="start"
-        android:paddingLeft="0dp"
-        android:textOff="OFF"
-        android:textOn="ON"
-        android:thumbTint="@android:color/holo_blue_dark" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <Switch
+            android:id="@+id/switch2"
+            style="style/MySwitchWidgetTheme"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:checked="false"
+            android:showText="true"
+            android:splitTrack="true"
+            android:switchMinWidth="120dp"
+            android:switchPadding="20dp"
+            android:switchTextAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="Bluetooth State:"
+            android:textAlignment="viewStart"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:thumb="@android:color/holo_red_dark"
+            android:thumbTint="@android:color/holo_red_dark"
+            tools:checked="false" />
+
+
+    </LinearLayout>
 
     <Button
-            android:id="@+id/scan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bluetooth ON" />
-
-        <Button
-            android:id="@+id/off"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bluetooth OFF" />
-
-        <Button
             android:id="@+id/PairedBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,7 +105,7 @@
             android:layout_height="wrap_content"
             android:text="Discover New Devices" />
 
-        <ListView
+    <ListView
             android:id="@+id/devicesListView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
