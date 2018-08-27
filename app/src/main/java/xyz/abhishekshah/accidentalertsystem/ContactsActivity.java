@@ -65,7 +65,7 @@ public class ContactsActivity extends AppCompatActivity {
         );
 
     }
-    
+
     //Following code doesnot work
 
     @SuppressWarnings("deprecation")
