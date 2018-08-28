@@ -92,16 +92,22 @@
     </LinearLayout>
 
     <Button
-            android:id="@+id/PairedBtn"
+            android:id="@+id/PairedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Show paired Devices" />
 
         <Button
-            android:id="@+id/discover"
+            android:id="@+id/DiscoverButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Discover New Devices" />
+
+    <Button
+        android:id="@+id/ContactsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contacts Button" />
 
     <ListView
             android:id="@+id/devicesListView"

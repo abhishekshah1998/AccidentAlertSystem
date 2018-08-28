@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         mBluetoothStatus = findViewById(R.id.bluetoothStatus);
         mReadBuffer =  findViewById(R.id.readBuffer);
-        mDiscoverBtn = findViewById(R.id.discover);
-        mListPairedDevicesBtn = findViewById(R.id.PairedBtn);
+        mDiscoverBtn = findViewById(R.id.DiscoverButton);
+        mListPairedDevicesBtn = findViewById(R.id.PairedButton);
         mSwitch = findViewById(R.id.switch2);
 
         mBTArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -145,6 +145,19 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
+
+        Button ContactsButton= (Button)findViewById(R.id.ContactsButton);
+        ContactsButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+
+                Intent startIntent=new Intent(getApplicationContext(),ContactsActivity.class);
+
+                startActivity(startIntent);
+
+            }
+        });
     }
 
 
@@ -329,4 +342,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) { }
         }
     }
+
+
+
+
 }
