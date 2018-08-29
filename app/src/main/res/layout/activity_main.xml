@@ -74,19 +74,21 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:checked="false"
+            android:paddingRight="20dp"
             android:showText="true"
-            android:textAlignment="viewStart"
-            android:text="Bluetooth State:"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:splitTrack="true"
             android:switchPadding="20dp"
             android:switchTextAppearance="@style/SwitchTextTheme"
+            android:text="Bluetooth State:"
+            android:textAlignment="viewStart"
             android:textOff="OFF"
             android:textOn="ON"
-            android:thumb="@drawable/thumb"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:thumb="@drawable/thumb_color"
+            android:thumbTint="@android:color/holo_red_dark"
             android:track="@drawable/track"
-            tools:checked="false"/>
+            tools:checked="false" />
 
 
     </LinearLayout>
