@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ContactsActivity extends AppCompatActivity {
@@ -19,6 +19,8 @@ public class ContactsActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     Button UpdateButton,AddButton,ViewButton,DeleteButton,LoadButton,SendButton;
     EditText editName,editNumber,editId;
+    String contactNumber[]=new String[4];
+    TextView textView;
 
     private static final int RESULT_PICK_CONTACT = 1;
 
@@ -30,50 +32,33 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        AddButton = (Button) findViewById(R.id.AddButton);
+      //  AddButton = (Button) findViewById(R.id.AddButton);
         ViewButton= (Button) findViewById(R.id.ViewButton);
-        UpdateButton=(Button)findViewById(R.id.UpdateButton);
+     //   UpdateButton=(Button)findViewById(R.id.UpdateButton);
         DeleteButton=(Button)findViewById(R.id.delete_button);
         LoadButton=(Button)findViewById(R.id.load_button);
-        SendButton=(Button)findViewById(R.id.send_button);
+     //   SendButton=(Button)findViewById(R.id.send_button);
 
-        editId=(EditText)findViewById(R.id.id_editText);
-        editName= (EditText) findViewById(R.id.name_editText);
-        editNumber=(EditText)findViewById(R.id.phone_editText);
+      //  editId=(EditText)findViewById(R.id.editText);
+      //  editName= (EditText) findViewById(R.id.name_editText);
+      //  editNumber=(EditText)findViewById(R.id.phone_editText);
+
+        textView=(TextView)findViewById(R.id.textView);
 
 
         myDB = new DatabaseHelper(this);
 
-        AddData();
+        //AddData();
         ViewData();
-        UpdateData();
+       // UpdateData();
         DeleteData();
         pickContact();
-        send();
 
     }
 
-    public void send(){
-        SendButton.setOnClickListener(
 
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        sendSMS("9403955423", "Hi You got a message!");
-                    }
-                }
-        );
 
-    }
 
-    //Following code doesnot work
-
-    @SuppressWarnings("deprecation")
-    private void sendSMS(String phoneNumber, String message)
-    {
-        SmsManager smsManager =     SmsManager.getDefault();
-        smsManager.sendTextMessage("Phone Number", null, "Message", null, null);
-    }
 
     public void pickContact()
     {
@@ -151,9 +136,13 @@ public class ContactsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Integer isDeleted=myDB.deleteData(editId.getText().toString());
-
+                        Integer isDeleted=myDB.deleteData();
                         if(isDeleted>0) {
+                            for(int i=0;i<4;i++)
+                            {
+                                contactNumber[i]="";
+                            }
+                            textView.setText(contactNumber[0]);
                             Toast.makeText(ContactsActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
                         }
                         else {
@@ -168,7 +157,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateData(){
+   /* public void UpdateData(){
         UpdateButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -188,9 +177,9 @@ public class ContactsActivity extends AppCompatActivity {
                 }
         );
 
-    }
+    }*/
 
-    public void AddData(){
+  /*  public void AddData(){
 
         AddButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -209,18 +198,21 @@ public class ContactsActivity extends AppCompatActivity {
                     }
                 }
         );
-    }
+    }*/
 
     public void ViewData(){
         ViewButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int count=0;
                        Cursor res= myDB.getData();
                         StringBuffer buffer = new StringBuffer();
 
                        if(res.getCount()==0){
                            showMessage("Error","Nothing found");
+
+                           textView.setText(contactNumber[0]);
                            return;
                        }
 
@@ -228,12 +220,17 @@ public class ContactsActivity extends AppCompatActivity {
 
                        while (res.moveToNext()){
 
-                           buffer.append("Id :"+ res.getString(0)+"\n");
+                          // buffer.append("Id :"+ res.getString(0)+"\n");
                            buffer.append("Name :"+ res.getString(1)+"\n");
                            buffer.append("Phone :"+ res.getString(2)+"\n");
+                           contactNumber[count]=res.getString(2);
+                           count++;
 
                        }
+                       count=0;
                        showMessage("Data",buffer.toString());
+
+                       textView.setText(contactNumber[0]);
                     }
                 }
 
