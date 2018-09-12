@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean updateData(String id,String NAME,String phone){
+ /*   public boolean updateData(String id,String NAME,String phone){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -70,10 +70,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
 
     }
-
-    public Integer deleteData(String id){
+*/
+    public Integer deleteData(){
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME,"ID = ?",new String[]{id} );
+        return db.delete(TABLE_NAME,"1",null );
 
 
     }
