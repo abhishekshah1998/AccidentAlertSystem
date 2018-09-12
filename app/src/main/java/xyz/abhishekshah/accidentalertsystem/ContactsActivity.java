@@ -35,6 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     Button UpdateButton,AddButton,ViewButton,DeleteButton,LoadButton,SendButton;
     EditText editName,editNumber,editId;
+    String contactNumber[]=new String[4];
 
     private static final int RESULT_PICK_CONTACT = 1;
     private static final int REQUEST_SMS = 0;
@@ -46,9 +47,9 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        AddButton = (Button) findViewById(R.id.AddButton);
+       // AddButton = (Button) findViewById(R.id.AddButton);
         ViewButton= (Button) findViewById(R.id.ViewButton);
-        UpdateButton=(Button)findViewById(R.id.UpdateButton);
+       // UpdateButton=(Button)findViewById(R.id.UpdateButton);
         DeleteButton=(Button)findViewById(R.id.delete_button);
         LoadButton=(Button)findViewById(R.id.load_button);
         SendButton=(Button)findViewById(R.id.send_button);
@@ -60,9 +61,9 @@ public class ContactsActivity extends AppCompatActivity {
 
         myDB = new DatabaseHelper(this);
 
-        AddData();
+      //  AddData();
         ViewData();
-        UpdateData();
+       // UpdateData();
         DeleteData();
         pickContact();
 
@@ -99,25 +100,30 @@ public class ContactsActivity extends AppCompatActivity {
 
     public void sendMySMS() {
 
-        String phone = "9028531389";
-        String message = "Helloo!";
+        for(int i=0;i<4;i++){
 
-        //Check if the phoneNumber is empty
-        if (phone.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number", Toast.LENGTH_SHORT).show();
-        } else {
+            String phone = contactNumber[i];
+            String message = "Helloo!";
 
-            SmsManager sms = SmsManager.getDefault();
-            // if message length is too long messages are divided
-            List<String> messages = sms.divideMessage(message);
-            for (String msg : messages) {
+            //Check if the phoneNumber is empty
+            if (phone.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number", Toast.LENGTH_SHORT).show();
+            } else {
 
-                PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
-                PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
-                sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
+                SmsManager sms = SmsManager.getDefault();
+                // if message length is too long messages are divided
+                List<String> messages = sms.divideMessage(message);
+                for (String msg : messages) {
 
+                    PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
+                    PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
+                    sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
+
+                }
             }
+
         }
+
     }
 
     public void onResume() {
@@ -309,10 +315,17 @@ public class ContactsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Integer isDeleted=myDB.deleteData(editId.getText().toString());
+                        Integer isDeleted=myDB.deleteData();
 
                         if(isDeleted>0) {
+
                             Toast.makeText(ContactsActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
+
+                            for(int i=0;i<4;i++){
+                                contactNumber[i]="";
+
+
+                            }
                         }
                         else {
 
@@ -326,7 +339,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateData(){
+/*    public void UpdateData(){
         UpdateButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -346,9 +359,9 @@ public class ContactsActivity extends AppCompatActivity {
                 }
         );
 
-    }
+    }*/
 
-    public void AddData(){
+ /*   public void AddData(){
 
         AddButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -367,7 +380,7 @@ public class ContactsActivity extends AppCompatActivity {
                     }
                 }
         );
-    }
+    }*/
 
     public void ViewData(){
         ViewButton.setOnClickListener(
@@ -376,6 +389,7 @@ public class ContactsActivity extends AppCompatActivity {
                     public void onClick(View v) {
                        Cursor res= myDB.getData();
                         StringBuffer buffer = new StringBuffer();
+                        int count=0;
 
                        if(res.getCount()==0){
                            showMessage("Error","Nothing found");
@@ -384,13 +398,16 @@ public class ContactsActivity extends AppCompatActivity {
 
 
 
-                       while (res.moveToNext()){
+                       while (res.moveToNext() && count<4){
 
-                           buffer.append("Id :"+ res.getString(0)+"\n");
+                        //   buffer.append("Id :"+ res.getString(0)+"\n");
                            buffer.append("Name :"+ res.getString(1)+"\n");
                            buffer.append("Phone :"+ res.getString(2)+"\n");
 
+                            contactNumber[count]=res.getString(2);
+                            count++;
                        }
+                       count=0;
                        showMessage("Data",buffer.toString());
                     }
                 }
