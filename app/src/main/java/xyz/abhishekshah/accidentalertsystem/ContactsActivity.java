@@ -7,58 +7,231 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+
+
+import java.util.List;
+import static android.Manifest.permission.SEND_SMS;
+
 
 public class ContactsActivity extends AppCompatActivity {
 
     DatabaseHelper myDB;
     Button UpdateButton,AddButton,ViewButton,DeleteButton,LoadButton,SendButton;
     EditText editName,editNumber,editId;
-    String contactNumber[]=new String[4];
-    TextView textView;
 
     private static final int RESULT_PICK_CONTACT = 1;
+    private static final int REQUEST_SMS = 0;
 
-
-
+    private BroadcastReceiver sentStatusReceiver, deliveredStatusReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-      //  AddButton = (Button) findViewById(R.id.AddButton);
+        AddButton = (Button) findViewById(R.id.AddButton);
         ViewButton= (Button) findViewById(R.id.ViewButton);
-     //   UpdateButton=(Button)findViewById(R.id.UpdateButton);
+        UpdateButton=(Button)findViewById(R.id.UpdateButton);
         DeleteButton=(Button)findViewById(R.id.delete_button);
         LoadButton=(Button)findViewById(R.id.load_button);
-     //   SendButton=(Button)findViewById(R.id.send_button);
+        SendButton=(Button)findViewById(R.id.send_button);
 
-      //  editId=(EditText)findViewById(R.id.editText);
-      //  editName= (EditText) findViewById(R.id.name_editText);
+       // editId=(EditText)findViewById(R.id.id_editText);
+       // editName= (EditText) findViewById(R.id.name_editText);
       //  editNumber=(EditText)findViewById(R.id.phone_editText);
-
-        textView=(TextView)findViewById(R.id.textView);
 
 
         myDB = new DatabaseHelper(this);
 
-        //AddData();
+        AddData();
         ViewData();
-       // UpdateData();
+        UpdateData();
         DeleteData();
         pickContact();
 
+        SendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    int hasSMSPermission = checkSelfPermission(Manifest.permission.SEND_SMS);
+                    if (hasSMSPermission != PackageManager.PERMISSION_GRANTED) {
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS)) {
+                            showMessageOKCancel("You need to allow access to Send SMS",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions(new String[] {Manifest.permission.SEND_SMS},
+                                                        REQUEST_SMS);
+                                            }
+                                        }
+                                    });
+                            return;
+                        }
+                        requestPermissions(new String[] {Manifest.permission.SEND_SMS},
+                                REQUEST_SMS);
+                        return;
+                    }
+                    sendMySMS();
+                }
+            }
+        });
+
+    }
+
+    public void sendMySMS() {
+
+        String phone = "9028531389";
+        String message = "Helloo!";
+
+        //Check if the phoneNumber is empty
+        if (phone.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number", Toast.LENGTH_SHORT).show();
+        } else {
+
+            SmsManager sms = SmsManager.getDefault();
+            // if message length is too long messages are divided
+            List<String> messages = sms.divideMessage(message);
+            for (String msg : messages) {
+
+                PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
+                PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
+                sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
+
+            }
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        sentStatusReceiver=new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                String s = "Unknown Error";
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        s = "Message Sent Successfully !!";
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        s = "Generic Failure Error";
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        s = "Error : No Service Available";
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        s = "Error : Null PDU";
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        s = "Error : Radio is off";
+                        break;
+                    default:
+                        break;
+                }
+               // sendStatusTextView.setText(s);
+
+            }
+        };
+        deliveredStatusReceiver=new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                String s = "Message Not Delivered";
+                switch(getResultCode()) {
+                    case Activity.RESULT_OK:
+                        s = "Message Delivered Successfully";
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                }
+               // deliveryStatusTextView.setText(s);
+               // phoneEditText.setText("");
+               // messageEditText.setText("");
+            }
+        };
+        registerReceiver(sentStatusReceiver, new IntentFilter("SMS_SENT"));
+        registerReceiver(deliveredStatusReceiver, new IntentFilter("SMS_DELIVERED"));
     }
 
 
 
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(sentStatusReceiver);
+        unregisterReceiver(deliveredStatusReceiver);
+    }
 
+
+
+    private boolean checkPermission() {
+        return ( ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS ) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{SEND_SMS}, REQUEST_SMS);
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_SMS:
+                if (grantResults.length > 0 &&  grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access sms", Toast.LENGTH_SHORT).show();
+                    sendMySMS();
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and sms", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(SEND_SMS)) {
+                            showMessageOKCancel("You need to allow access to both the permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions(new String[]{SEND_SMS},
+                                                        REQUEST_SMS);
+                                            }
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+                builder.setMessage(message);
+                builder.setPositiveButton("OK", okListener);
+                builder.setNegativeButton("Cancel", null);
+                android.support.v7.app.AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+    }
 
     public void pickContact()
     {
@@ -136,13 +309,9 @@ public class ContactsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Integer isDeleted=myDB.deleteData();
+                        Integer isDeleted=myDB.deleteData(editId.getText().toString());
+
                         if(isDeleted>0) {
-                            for(int i=0;i<4;i++)
-                            {
-                                contactNumber[i]="";
-                            }
-                            textView.setText(contactNumber[0]);
                             Toast.makeText(ContactsActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
                         }
                         else {
@@ -157,7 +326,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     }
 
-   /* public void UpdateData(){
+    public void UpdateData(){
         UpdateButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -177,9 +346,9 @@ public class ContactsActivity extends AppCompatActivity {
                 }
         );
 
-    }*/
+    }
 
-  /*  public void AddData(){
+    public void AddData(){
 
         AddButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -198,21 +367,18 @@ public class ContactsActivity extends AppCompatActivity {
                     }
                 }
         );
-    }*/
+    }
 
     public void ViewData(){
         ViewButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int count=0;
                        Cursor res= myDB.getData();
                         StringBuffer buffer = new StringBuffer();
 
                        if(res.getCount()==0){
                            showMessage("Error","Nothing found");
-
-                           textView.setText(contactNumber[0]);
                            return;
                        }
 
@@ -220,17 +386,12 @@ public class ContactsActivity extends AppCompatActivity {
 
                        while (res.moveToNext()){
 
-                          // buffer.append("Id :"+ res.getString(0)+"\n");
+                           buffer.append("Id :"+ res.getString(0)+"\n");
                            buffer.append("Name :"+ res.getString(1)+"\n");
                            buffer.append("Phone :"+ res.getString(2)+"\n");
-                           contactNumber[count]=res.getString(2);
-                           count++;
 
                        }
-                       count=0;
                        showMessage("Data",buffer.toString());
-
-                       textView.setText(contactNumber[0]);
                     }
                 }
 
