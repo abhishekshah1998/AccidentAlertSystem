@@ -35,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
     // GUI Components
     private TextView mBluetoothStatus;
-    private TextView mReadBuffer;
+   // private TextView mReadBuffer;
+    private TextView val1;
+    private TextView val2;
+    private TextView val3;
+    private TextView val4;
     private Button mListPairedDevicesBtn;
-    private Button mDiscoverBtn;
+   // private Button mDiscoverBtn;
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
@@ -63,8 +67,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mBluetoothStatus = findViewById(R.id.bluetoothStatus);
-        mReadBuffer =  findViewById(R.id.readBuffer);
-        mDiscoverBtn = findViewById(R.id.DiscoverButton);
+        //mReadBuffer =  findViewById(R.id.readBuffer);
+        val1 =  findViewById(R.id.val1);
+        val2 =  findViewById(R.id.val2);
+        val3 =  findViewById(R.id.val3);
+        val4 =  findViewById(R.id.val4);
+       // mDiscoverBtn = findViewById(R.id.DiscoverButton);
         mListPairedDevicesBtn = findViewById(R.id.PairedButton);
         mSwitch = findViewById(R.id.switch2);
 
@@ -84,10 +92,17 @@ public class MainActivity extends AppCompatActivity {
                     String readMessage = null;
                     try {
                         readMessage = new String((byte[]) msg.obj, "UTF-8");
+                        String[] separated = readMessage.split(",");
+                        val1.setText(separated[0]);
+                        val2.setText(separated[1]);
+                        val3.setText(separated[2]);
+                        val4.setText(separated[2]);
+
+
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    mReadBuffer.setText(readMessage);
+                   // mReadBuffer.setText(readMessage);
                 }
 
                 if(msg.what == CONNECTING_STATUS){
@@ -109,16 +124,17 @@ public class MainActivity extends AppCompatActivity {
             mListPairedDevicesBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
+                    mDevicesListView.setVisibility(v.VISIBLE);
                     listPairedDevices(v);
                 }
             });
 
-            mDiscoverBtn.setOnClickListener(new View.OnClickListener(){
+           /* mDiscoverBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
                     discover(v);
                 }
-            });
+            });*/
 
             mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

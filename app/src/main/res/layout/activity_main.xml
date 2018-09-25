@@ -5,10 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:background="@drawable/qbkls"
     android:orientation="vertical"
     tools:context="xyz.abhishekshah.accidentalertsystem.MainActivity">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/app" />
+
+    <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -19,22 +26,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:ellipsize="end"
-            android:maxLines="1"
+
             android:text="RX:"
             android:textSize="24sp"
             android:textStyle="bold" />
 
+
+
         <TextView
             android:id="@+id/readBuffer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="34dp"
+            android:layout_marginLeft="0dp"
             android:layout_weight="0.9"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:singleLine="false"
+            android:lines="4"
+            android:maxLines="5"
             android:text="@string/read_buffer"
             android:textSize="24sp" />
-    </LinearLayout>
+    </LinearLayout> -->
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,27 +115,163 @@
         android:text="Show paired Devices"
         android:textSize="24sp" />
 
-    <Button
+    <!-- <Button
         android:id="@+id/DiscoverButton"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Discover New Devices"
         android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/ContactsButton"
-        style="@android:style/Widget.Holo.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SOS Contacts"
-        android:textSize="24sp" />
+    -->
 
     <ListView
         android:id="@+id/devicesListView"
         android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:choiceMode="singleChoice"
+        android:visibility="invisible">
+
+
+    </ListView>
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice" />
+        android:text="CAR METRICS"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Fuel Percentage:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/val1"
+                android:layout_width="86dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/val1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Coolant Temperature:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/val2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/val2"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv3"
+                android:layout_width="112dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trip Distance:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/val3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/val3"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv4"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Mileage:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/val4"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/val4"
+                android:textSize="18sp" />
+        </TableRow>
+
+    </TableLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:foregroundGravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/ContactsButton"
+            style="@android:style/Widget.Holo.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SOS Contacts"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:foregroundGravity="bottom"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                style="@android:style/Widget.Holo.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Follow Me!" />
+
+            <Button
+                android:id="@+id/button2"
+                style="@android:style/Widget.Holo.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dashboard" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>
