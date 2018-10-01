@@ -11,7 +11,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 import android.app.Activity;
@@ -33,8 +33,9 @@ import static android.Manifest.permission.SEND_SMS;
 public class ContactsActivity extends AppCompatActivity {
 
     DatabaseHelper myDB;
-    Button UpdateButton,AddButton,ViewButton,DeleteButton,LoadButton,SendButton;
-    EditText editName,editNumber,editId;
+    Button ViewButton,DeleteButton,LoadButton,SendButton;
+    private static final int MISSED_CALL_TYPE = 0;
+
     String contactNumber[]=new String[4];
 
     private static final int RESULT_PICK_CONTACT = 1;
@@ -47,23 +48,20 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-       // AddButton = (Button) findViewById(R.id.AddButton);
-        ViewButton= (Button) findViewById(R.id.ViewButton);
-       // UpdateButton=(Button)findViewById(R.id.UpdateButton);
-        DeleteButton=(Button)findViewById(R.id.delete_button);
-        LoadButton=(Button)findViewById(R.id.load_button);
-        SendButton=(Button)findViewById(R.id.send_button);
+        ViewButton=  findViewById(R.id.ViewButton);
+        DeleteButton=findViewById(R.id.delete_button);
+        LoadButton=findViewById(R.id.load_button);
+        SendButton=findViewById(R.id.send_button);
 
-       // editId=(EditText)findViewById(R.id.id_editText);
-       // editName= (EditText) findViewById(R.id.name_editText);
-      //  editNumber=(EditText)findViewById(R.id.phone_editText);
+
+
 
 
         myDB = new DatabaseHelper(this);
 
-      //  AddData();
+
         ViewData();
-       // UpdateData();
+
         DeleteData();
         pickContact();
 
@@ -107,7 +105,7 @@ public class ContactsActivity extends AppCompatActivity {
 
             //Check if the phoneNumber is empty
             if (phone.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Please select all four contacts.", Toast.LENGTH_SHORT).show();
             } else {
 
                 SmsManager sms = SmsManager.getDefault();
@@ -249,12 +247,10 @@ public class ContactsActivity extends AppCompatActivity {
                        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                        startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
+
                    }
                }
-
        );
-
-
     }
 
     @Override
@@ -284,7 +280,7 @@ public class ContactsActivity extends AppCompatActivity {
             Uri uri = data.getData();
             //Query the content uri
             cursor = getContentResolver().query(uri, null, null, null, null);
-            cursor.moveToFirst();
+           cursor.moveToFirst();
             // column index of the phone number
             int  phoneIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             // column index of the contact name
@@ -316,6 +312,7 @@ public class ContactsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Integer isDeleted=myDB.deleteData();
+
 
                         if(isDeleted>0) {
 
