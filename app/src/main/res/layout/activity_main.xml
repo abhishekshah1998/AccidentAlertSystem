@@ -9,11 +9,11 @@
     android:orientation="vertical"
     tools:context="xyz.abhishekshah.accidentalertsystem.MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="106dp"
-        app:srcCompat="@drawable/app" />
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="106dp"-->
+        <!--app:srcCompat="@drawable/app" />-->
 
     <!-- <LinearLayout
         android:layout_width="match_parent"
@@ -279,7 +279,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/follow_button"
                 style="@android:style/Widget.Holo.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,6 +1,11 @@
 package xyz.abhishekshah.accidentalertsystem;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,18 +38,20 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
     // GUI Components
     private TextView mBluetoothStatus;
@@ -214,6 +221,15 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivity(startIntent);
 
+            }
+        });
+
+        Button follow_button = (Button)findViewById(R.id.follow_button);
+        follow_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerfragment timepicker=new TimePickerfragment();
+                timepicker.show(getSupportFragmentManager(),"time picker");
             }
         });
     }
@@ -423,6 +439,39 @@ public class MainActivity extends AppCompatActivity {
         }else{
             gpsTracker.showSettingsAlert();
         }
+    }
+
+
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+        Calendar c=Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        c.set(Calendar.MINUTE,minute);
+        c.set(Calendar.SECOND,0);
+
+        updateTimeText(c);
+        startAlarm(c);
+
+
+    }
+
+    private void updateTimeText(Calendar c) {
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startAlarm(Calendar c){
+
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent=new Intent(this,AlertReceiver.class);
+
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(this,1,intent,0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
     }
 }
 
