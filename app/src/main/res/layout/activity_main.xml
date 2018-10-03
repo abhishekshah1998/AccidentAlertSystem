@@ -48,6 +48,12 @@
     </LinearLayout> -->
 
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="390dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/app" />
+
     <TextView
         android:id="@+id/tvLatitude"
         android:layout_width="match_parent"
@@ -60,13 +66,13 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <Button
+    <!-- <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="getLocation"
         android:text="Location"
-        android:visibility="visible" />
+        android:visibility="visible" /> -->
 
     <LinearLayout
         android:layout_width="match_parent"

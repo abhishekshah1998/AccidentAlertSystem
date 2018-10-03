@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         val4 =  findViewById(R.id.val4);
        // mDiscoverBtn = findViewById(R.id.DiscoverButton);
         mListPairedDevicesBtn = findViewById(R.id.PairedButton);
-        location = findViewById(R.id.button3);
+       // location = findViewById(R.id.button3);
         mSwitch = findViewById(R.id.switch2);
         tvLatitude = findViewById(R.id.tvLatitude);
         tvLongitude = findViewById(R.id.tvLongitude);
@@ -133,7 +133,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
 
 
-       // getLocation();
+
+
+
+
 
         mHandler = new Handler(){
             public void handleMessage(android.os.Message msg){
@@ -175,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 public void onClick(View v){
                     mDevicesListView.setVisibility(v.VISIBLE);
                     listPairedDevices(v);
+                    getLocation();
                 }
             });
 
@@ -428,8 +432,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 */
 
-
-    public void getLocation(View view){
+    public void getLocation(){
         gpsTracker = new GpsTracker(MainActivity.this);
         if(gpsTracker.canGetLocation()){
             double latitude = gpsTracker.getLatitude();
@@ -440,6 +443,9 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             gpsTracker.showSettingsAlert();
         }
     }
+
+
+
 
 
 
@@ -474,5 +480,3 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
     }
 }
-
-
