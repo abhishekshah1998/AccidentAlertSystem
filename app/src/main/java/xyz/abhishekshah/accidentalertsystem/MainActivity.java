@@ -41,6 +41,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -61,16 +69,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private TextView val3;
     private TextView val4;
     private Button mListPairedDevicesBtn;
-    private Button location;
-   // private Button mDiscoverBtn;
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
     private Switch mSwitch;
-   // TextView locationText;
-    LocationManager locationManager;
-
+  //  LocationManager locationManager;
     private GpsTracker gpsTracker;
     private TextView tvLatitude,tvLongitude;
 
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         val4 =  findViewById(R.id.val4);
        // mDiscoverBtn = findViewById(R.id.DiscoverButton);
         mListPairedDevicesBtn = findViewById(R.id.PairedButton);
-        location = findViewById(R.id.button3);
+       // location = findViewById(R.id.button3);
         mSwitch = findViewById(R.id.switch2);
         tvLatitude = findViewById(R.id.tvLatitude);
         tvLongitude = findViewById(R.id.tvLongitude);
@@ -115,11 +119,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         mDevicesListView.setAdapter(mBTArrayAdapter); // assign model to view
         mDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
-     /*   if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
 
-        } */
 
 
 
@@ -131,9 +132,87 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             e.printStackTrace();
         }
 
+        BoomMenuButton bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        bmb.setButtonEnum(ButtonEnum.Ham);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_3);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
+       // bmb.addBuilder(BuilderManager.getSimpleCircleButtonBuilder());
 
 
-       // getLocation();
+
+        HamButton.Builder builder = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        Intent startIntent=new Intent(getApplicationContext(),ContactsActivity.class);
+
+                        startActivity(startIntent);
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name1)
+                .normalTextRes(R.string.app_name1)
+                .normalImageRes(R.drawable.sos);
+
+
+        bmb.addBuilder(builder);
+
+        HamButton.Builder builder1 = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        TimePickerfragment timepicker=new TimePickerfragment();
+                        timepicker.show(getSupportFragmentManager(),"time picker");
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name2)
+                .normalTextRes(R.string.app_name2)
+                .normalImageRes(R.drawable.follow);
+        bmb.addBuilder(builder1);
+
+        HamButton.Builder builder2 = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        // When the boom-button corresponding this builder is clicked.
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name3)
+                .normalTextRes(R.string.app_name3)
+                .normalImageRes(R.drawable.download);
+        bmb.addBuilder(builder2);
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            HamButton.Builder builder = new HamButton.Builder()
+
+                    .highlightedTextRes(R.string.app_name)
+                    .normalTextRes(R.string.app_name)
+                    .normalImageRes(R.drawable.app);
+            bmb.addBuilder(builder);
+        }
+
+*/
+
 
         mHandler = new Handler(){
             public void handleMessage(android.os.Message msg){
@@ -175,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 public void onClick(View v){
                     mDevicesListView.setVisibility(v.VISIBLE);
                     listPairedDevices(v);
+                    getLocation();
                 }
             });
 
@@ -210,28 +290,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             });
 
         }
-
-        Button ContactsButton= (Button)findViewById(R.id.ContactsButton);
-        ContactsButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v){
-
-                Intent startIntent=new Intent(getApplicationContext(),ContactsActivity.class);
-
-                startActivity(startIntent);
-
-            }
-        });
-
-        Button follow_button = (Button)findViewById(R.id.follow_button);
-        follow_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerfragment timepicker=new TimePickerfragment();
-                timepicker.show(getSupportFragmentManager(),"time picker");
-            }
-        });
     }
 
 
@@ -428,8 +486,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 */
 
-
-    public void getLocation(View view){
+    public void getLocation(){
         gpsTracker = new GpsTracker(MainActivity.this);
         if(gpsTracker.canGetLocation()){
             double latitude = gpsTracker.getLatitude();
@@ -440,6 +497,9 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             gpsTracker.showSettingsAlert();
         }
     }
+
+
+
 
 
 
@@ -474,5 +534,3 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
     }
 }
-
-

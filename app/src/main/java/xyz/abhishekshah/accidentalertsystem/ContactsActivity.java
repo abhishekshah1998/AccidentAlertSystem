@@ -101,7 +101,7 @@ public class ContactsActivity extends AppCompatActivity {
         for(int i=0;i<4;i++){
 
             String phone = contactNumber[i];
-            String message = "Helloo!";
+            String message = "I have met with an accident at: https://www.google.com/maps/search/?api=1&query=18.489894,73.852447";
 
             //Check if the phoneNumber is empty
             if (phone.isEmpty()) {
