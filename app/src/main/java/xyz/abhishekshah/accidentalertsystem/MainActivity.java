@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private TextView val2;
     private TextView val3;
     private TextView val4;
+    public String value1;
+    public String value2;
+    public String value3;
+    public String value4;
     private Button mListPairedDevicesBtn;
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
@@ -118,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         mDevicesListView = findViewById(R.id.devicesListView);
         mDevicesListView.setAdapter(mBTArrayAdapter); // assign model to view
         mDevicesListView.setOnItemClickListener(mDeviceClickListener);
-
 
 
 
@@ -181,6 +184,22 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                     @Override
                     public void onBoomButtonClick(int index) {
                         // When the boom-button corresponding this builder is clicked.
+                        Intent startIntent=new Intent(getApplicationContext(),Dashboard.class);
+
+
+                        startIntent.putExtra("value1",value1);
+
+                        startIntent.putExtra("value2",value2);
+
+                        startIntent.putExtra("value3",value3);
+
+                        startIntent.putExtra("value4",value4);
+                        //startActivity(myIntent);
+                        //startActivity(myIntent1);
+                        //startActivity(myIntent2);
+                        //startActivity(myIntent3);
+                        startActivity(startIntent);
+
 
                     }
                 })
@@ -224,7 +243,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                         val1.setText(separated[0]);
                         val2.setText(separated[1]);
                         val3.setText(separated[2]);
-                        val4.setText(separated[2]);
+                        val4.setText(separated[3]);
+                        value1=separated[0];
+                        value2=separated[1];
+                        value3=separated[2];
+                        value4=separated[3];
+
 
 
                     } catch (UnsupportedEncodingException e) {
