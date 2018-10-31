@@ -272,6 +272,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginStart="304dp"
+        android:layout_marginBottom="10dp"
         android:foregroundGravity="bottom|right"
         app:bmb_buttonEnum="ham"
         app:bmb_buttonPlaceEnum="buttonPlace_ham_3"

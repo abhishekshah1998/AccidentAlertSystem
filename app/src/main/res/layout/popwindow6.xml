@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:background="@android:color/holo_blue_bright">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="105dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="135dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/tick"
+        android:contentDescription="tick"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        app:srcCompat="@drawable/tick"
+        tools:srcCompat="@drawable/tick" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="104dp"
+        android:text="Power Steering plays an important role in cornering at high speeds."
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
+
+</RelativeLayout>

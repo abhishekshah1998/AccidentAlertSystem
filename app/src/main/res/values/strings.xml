@@ -7,7 +7,5 @@
     <string name="app_name1">SOS CONTACTS</string>
     <string name="app_name2">Follow ME!</string>
     <string name="app_name3">Dashboard</string>
-
-
     <string name="bluetooth_status"><![CDATA[<Bluetooth Status>]]></string>
 </resources>
