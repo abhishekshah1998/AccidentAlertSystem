@@ -4,8 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -53,11 +55,17 @@ public class NotificationHelper extends ContextWrapper{
     }
 
     public NotificationCompat.Builder getChannelnotification() {
+
+        Intent resultIntent = new Intent(this, womensafety.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL1ID)
-                .setContentTitle("working")
+                .setContentTitle("Alert")
                 .setVibrate(new long[]{1000,1000})
                 .setSmallIcon(R.drawable.ic_one)
-                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setAutoCancel(true)
+                .setContentIntent(resultPendingIntent);
 
     }
 }

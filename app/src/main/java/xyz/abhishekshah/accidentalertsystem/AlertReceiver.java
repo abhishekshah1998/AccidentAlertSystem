@@ -14,5 +14,7 @@ public class AlertReceiver extends BroadcastReceiver{
         notificationHelper.getManager().notify(1,nb.build());
 
 
+
+
     }
 }
