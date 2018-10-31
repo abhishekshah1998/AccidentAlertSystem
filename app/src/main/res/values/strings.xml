@@ -4,6 +4,8 @@
     <string name="val2"><![CDATA[<Read Buffer2>]]></string>
     <string name="val3"><![CDATA[<Read Buffer3>]]></string>
     <string name="val4"><![CDATA[<Read Buffer4>]]></string>
-
+    <string name="app_name1">SOS CONTACTS</string>
+    <string name="app_name2">Follow ME!</string>
+    <string name="app_name3">Dashboard</string>
     <string name="bluetooth_status"><![CDATA[<Bluetooth Status>]]></string>
 </resources>

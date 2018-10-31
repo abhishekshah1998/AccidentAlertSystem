@@ -1,8 +1,24 @@
-//dev-branch
-
-
 package xyz.abhishekshah.accidentalertsystem;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
@@ -22,16 +38,28 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
     // GUI Components
     private TextView mBluetoothStatus;
@@ -40,13 +68,21 @@ public class MainActivity extends AppCompatActivity {
     private TextView val2;
     private TextView val3;
     private TextView val4;
+    public String value1;
+    public String value2;
+    public String value3;
+    public String value4;
     private Button mListPairedDevicesBtn;
-   // private Button mDiscoverBtn;
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
     private ListView mDevicesListView;
     private Switch mSwitch;
+  //  LocationManager locationManager;
+    private GpsTracker gpsTracker;
+    private TextView tvLatitude,tvLongitude;
+
+
 
     private Handler mHandler; // Our main handler that will receive callback notifications
     private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
@@ -74,7 +110,11 @@ public class MainActivity extends AppCompatActivity {
         val4 =  findViewById(R.id.val4);
        // mDiscoverBtn = findViewById(R.id.DiscoverButton);
         mListPairedDevicesBtn = findViewById(R.id.PairedButton);
+       // location = findViewById(R.id.button3);
         mSwitch = findViewById(R.id.switch2);
+        tvLatitude = findViewById(R.id.tvLatitude);
+        tvLongitude = findViewById(R.id.tvLongitude);
+       // locationText = (TextView)findViewById(R.id.locationText);
 
         mBTArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         mBTAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
@@ -84,6 +124,113 @@ public class MainActivity extends AppCompatActivity {
         mDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
 
+
+
+
+        try {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        BoomMenuButton bmb = (BoomMenuButton) findViewById(R.id.bmb);
+        bmb.setButtonEnum(ButtonEnum.Ham);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_3);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
+       // bmb.addBuilder(BuilderManager.getSimpleCircleButtonBuilder());
+
+
+
+        HamButton.Builder builder = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        Intent startIntent=new Intent(getApplicationContext(),ContactsActivity.class);
+
+                        startActivity(startIntent);
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name1)
+                .normalTextRes(R.string.app_name1)
+                .normalImageRes(R.drawable.sos);
+
+
+        bmb.addBuilder(builder);
+
+        HamButton.Builder builder1 = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        TimePickerfragment timepicker=new TimePickerfragment();
+                        timepicker.show(getSupportFragmentManager(),"time picker");
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name2)
+                .normalTextRes(R.string.app_name2)
+                .normalImageRes(R.drawable.follow);
+        bmb.addBuilder(builder1);
+
+        HamButton.Builder builder2 = new HamButton.Builder()
+
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        // When the boom-button corresponding this builder is clicked.
+                        Intent startIntent=new Intent(getApplicationContext(),Dashboard.class);
+
+
+                        startIntent.putExtra("value1",value1);
+
+                        startIntent.putExtra("value2",value2);
+
+                        startIntent.putExtra("value3",value3);
+
+                        startIntent.putExtra("value4",value4);
+                        //startActivity(myIntent);
+                        //startActivity(myIntent1);
+                        //startActivity(myIntent2);
+                        //startActivity(myIntent3);
+                        startActivity(startIntent);
+
+
+                    }
+                })
+
+                .highlightedTextRes(R.string.app_name3)
+                .normalTextRes(R.string.app_name3)
+                .normalImageRes(R.drawable.download);
+        bmb.addBuilder(builder2);
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+        for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
+            HamButton.Builder builder = new HamButton.Builder()
+
+                    .highlightedTextRes(R.string.app_name)
+                    .normalTextRes(R.string.app_name)
+                    .normalImageRes(R.drawable.app);
+            bmb.addBuilder(builder);
+        }
+
+*/
 
 
         mHandler = new Handler(){
@@ -96,7 +243,12 @@ public class MainActivity extends AppCompatActivity {
                         val1.setText(separated[0]);
                         val2.setText(separated[1]);
                         val3.setText(separated[2]);
-                        val4.setText(separated[2]);
+                        val4.setText(separated[3]);
+                        value1=separated[0];
+                        value2=separated[1];
+                        value3=separated[2];
+                        value4=separated[3];
+
 
 
                     } catch (UnsupportedEncodingException e) {
@@ -126,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v){
                     mDevicesListView.setVisibility(v.VISIBLE);
                     listPairedDevices(v);
+                    getLocation();
                 }
             });
 
@@ -161,19 +314,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-
-        Button ContactsButton= (Button)findViewById(R.id.ContactsButton);
-        ContactsButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v){
-
-                Intent startIntent=new Intent(getApplicationContext(),ContactsActivity.class);
-
-                startActivity(startIntent);
-
-            }
-        });
     }
 
 
@@ -359,7 +499,62 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+   /* void getLocation() {
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, (LocationListener) this);
+        }
+        catch(SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+*/
+
+    public void getLocation(){
+        gpsTracker = new GpsTracker(MainActivity.this);
+        if(gpsTracker.canGetLocation()){
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            tvLatitude.setText(String.valueOf(latitude));
+            tvLongitude.setText(String.valueOf(longitude));
+        }else{
+            gpsTracker.showSettingsAlert();
+        }
+    }
 
 
 
+
+
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+        Calendar c=Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        c.set(Calendar.MINUTE,minute);
+        c.set(Calendar.SECOND,0);
+
+        updateTimeText(c);
+        startAlarm(c);
+
+
+    }
+
+    private void updateTimeText(Calendar c) {
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startAlarm(Calendar c){
+
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent=new Intent(this,AlertReceiver.class);
+
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(this,1,intent,0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
+    }
 }

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.INTERNET" />
      <!-- <uses-permission android:name="android.permission.READ_LOGS"/> -->
 
     <permission
@@ -28,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,10 +38,37 @@
 
         </activity>
 
-        <activity android:name=".ContactsActivity">
-
+        <activity android:name=".MainActivity">
 
         </activity>
+
+        <receiver android:name=".AlertReceiver"/>
+        <activity android:name=".ContactsActivity"></activity>
+        <activity android:name=".Dashboard"></activity>
+            <activity android:name=".Pop"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop1"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop2"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop3"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop4"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop5"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop6"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
+            <activity android:name=".Pop7"
+                android:theme="@style/AppTheme.CustomTheme"
+                ></activity>
 
 
     </application>
