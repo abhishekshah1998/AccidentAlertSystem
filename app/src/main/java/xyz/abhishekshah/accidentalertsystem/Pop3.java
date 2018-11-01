@@ -19,8 +19,8 @@ public class Pop3 extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
-        //TextView text=(TextView)findViewById(R.id.textView);
-        //textedit=getIntent().getExtras().getString("value4");
-        //text.setText(getIntent().getExtras().getString("value4"));
+        TextView text=(TextView)findViewById(R.id.textView);
+        textedit=getIntent().getExtras().getString("value4");
+        text.setText(getIntent().getExtras().getString("value4"));
     }
 }

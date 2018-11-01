@@ -19,8 +19,8 @@ public class Pop2 extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
-        //TextView text=(TextView)findViewById(R.id.textView);
-        //textedit=getIntent().getExtras().getString("value13");
-        //text.setText(getIntent().getExtras().getString("value3"));
+        TextView text=(TextView)findViewById(R.id.textView);
+        textedit=getIntent().getExtras().getString("value13");
+        text.setText(getIntent().getExtras().getString("value3"));
     }
 }

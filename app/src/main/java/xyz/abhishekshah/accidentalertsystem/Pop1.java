@@ -20,8 +20,8 @@ public class Pop1 extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
-        //TextView text=(TextView)findViewById(R.id.textView);
-        //textedit=getIntent().getExtras().getString("value2");
-        //text.setText(getIntent().getExtras().getString("value2"));
+        TextView text=(TextView)findViewById(R.id.textView);
+        textedit=getIntent().getExtras().getString("value2");
+        text.setText(getIntent().getExtras().getString("value2"));
     }
 }
